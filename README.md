@@ -73,3 +73,7 @@ Available options:
 gnome-extensions disable phantompanel@denhafiz.my
 rm -rf ~/.local/share/gnome-shell/extensions/phantompanel@denhafiz.my
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
