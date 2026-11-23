@@ -1,0 +1,11 @@
+{
+  "name": "Phantom Panel",
+  "description": "Hide the top bar with various options",
+  "uuid": "phantompanel@denhafiz.my",
+  "shell-version": [
+    "50",
+    "51"
+  ],
+  "settings-schema": "org.gnome.shell.extensions.phantom-panel",
+  "url": "phantompanel@denhafiz.my"
+}

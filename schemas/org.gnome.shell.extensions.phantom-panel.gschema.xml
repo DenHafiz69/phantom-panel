@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.phantom-panel" path="/org/gnome/shell/extensions/phantom-panel/">
+    <key name="show-on-hover" type="b">
+      <default>true</default>
+      <summary>Show panel on hover</summary>
+      <description>Show the panel when the mouse cursor approaches the top edge of the screen.</description>
+    </key>
+    <key name="show-in-overview" type="b">
+      <default>true</default>
+      <summary>Show panel in overview</summary>
+      <description>Show the panel when the Activities Overview is open.</description>
+    </key>
+    <key name="intellihide" type="b">
+      <default>false</default>
+      <summary>Intellihide</summary>
+      <description>Only hide the panel when a window takes up the space at the top of the screen.</description>
+    </key>
+    <key name="show-in-empty-workspace" type="b">
+      <default>false</default>
+      <summary>Show top bar in empty workspace</summary>
+      <description>Always show the top bar when there are no windows on the current workspace.</description>
+    </key>
+    <key name="intellihide-strict" type="b">
+      <default>false</default>
+      <summary>Only hide when window covers top bar</summary>
+      <description>Only hide the panel when a window is physically overlapping the top bar area, rather than hiding whenever any window is maximized.</description>
+    </key>
+    <key name="animation-duration" type="i">
+      <default>250</default>
+      <range min="0" max="1000"/>
+      <summary>Animation duration (ms)</summary>
+      <description>Duration of the panel slide animation in milliseconds.</description>
+    </key>
+    <key name="hover-delay" type="i">
+      <default>100</default>
+      <range min="0" max="2000"/>
+      <summary>Hide delay (ms)</summary>
+      <description>Delay in milliseconds before hiding the panel after the pointer leaves it.</description>
+    </key>
+    <key name="pressure-threshold" type="i">
+      <default>50</default>
+      <range min="0" max="500"/>
+      <summary>Top edge pressure threshold (px)</summary>
+      <description>Pointer pressure required at the top edge to reveal the panel. Set to 0 for instant hover.</description>
+    </key>
+    <key name="toggle-panel-shortcut" type="as">
+      <default>[]</default>
+      <summary>Toggle panel shortcut</summary>
+      <description>Keyboard shortcut to temporarily toggle panel visibility (e.g. &lt;Super&gt;&lt;Alt&gt;p).</description>
+    </key>
+  </schema>
+</schemalist>
