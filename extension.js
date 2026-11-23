@@ -65,6 +65,7 @@ export default class PhantomPanelExtension extends Extension {
                     if (Main.layoutManager.primaryMonitor?.inFullscreen) return;
 
                     this._cancelLeaveTimeout();
+                    this._toggleOverride = null;
                     this._hovering = true;
                     this._updatePanelVisibility();
                 });
@@ -100,6 +101,7 @@ export default class PhantomPanelExtension extends Extension {
         this._hoverActorEnterId = this._hoverActor.connect('enter-event', () => {
             this._cancelLeaveTimeout();
             if (this._settings.get_boolean('show-on-hover')) {
+                this._toggleOverride = null;
                 this._hovering = true;
                 this._updatePanelVisibility();
             }
@@ -151,7 +153,8 @@ export default class PhantomPanelExtension extends Extension {
         // Tracks state
         this._overviewVisible = false;
         this._hovering = false;
-        this._toggled = false;
+        this._toggleOverride = null;
+        this._panelVisible = true;
         this._windowOverlaps = false;
         this._workspaceEmpty = false;
         this._unredirectDisabled = false;
@@ -165,13 +168,14 @@ export default class PhantomPanelExtension extends Extension {
 
         // Keep track of panel allocation / size changes
         this._panelAllocationId = this._panel.connect('notify::allocation', () => {
-            if (this._panel && this._panel.height > 0) {
-                this._cachedPanelHeight = this._panel.height;
-            }
             const monitor = Main.layoutManager.primaryMonitor;
             if (this._hoverActor && monitor) {
                 this._hoverActor.set_position(monitor.x, monitor.y);
                 this._hoverActor.width = monitor.width;
+            }
+            if (this._panel && this._panel.height > 0 && this._panel.height !== this._cachedPanelHeight) {
+                this._cachedPanelHeight = this._panel.height;
+                this._updatePanelVisibility(false);
             }
         });
 
@@ -231,7 +235,12 @@ export default class PhantomPanelExtension extends Extension {
             Meta.KeyBindingFlags.NONE,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             () => {
-                this._toggled = !this._toggled;
+                if (this._panelVisible) {
+                    this._hovering = false;
+                    this._toggleOverride = false;
+                } else {
+                    this._toggleOverride = true;
+                }
                 this._updatePanelVisibility();
             }
         );
@@ -427,11 +436,11 @@ export default class PhantomPanelExtension extends Extension {
 
         if (this._overviewVisible && this._settings.get_boolean('show-in-overview')) {
             shouldShow = true;
-        } else if (this._toggled) {
-            shouldShow = true;
-        } else if (this._hovering) {
-            shouldShow = true;
         } else if (Main.panel.menuManager?.activeMenu) {
+            shouldShow = true;
+        } else if (this._toggleOverride !== null) {
+            shouldShow = this._toggleOverride;
+        } else if (this._hovering) {
             shouldShow = true;
         } else if (this._settings.get_boolean('show-in-empty-workspace') && this._workspaceEmpty) {
             shouldShow = true;
@@ -441,6 +450,7 @@ export default class PhantomPanelExtension extends Extension {
             shouldShow = false;
         }
 
+        this._panelVisible = shouldShow;
         const targetY = shouldShow ? 0 : -this._panelHeight;
         const duration = animate ? this._settings.get_int('animation-duration') : 0;
 
