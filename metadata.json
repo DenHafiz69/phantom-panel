@@ -7,5 +7,7 @@
     "51"
   ],
   "settings-schema": "org.gnome.shell.extensions.phantom-panel",
-  "url": "https://github.com/DenHafiz69/phantom-panel"
+  "url": "https://github.com/DenHafiz69/phantom-panel",
+  "version": 1,
+  "version-name": "1.0.0"
 }
